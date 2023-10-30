@@ -12,6 +12,8 @@ const models = require('./models/models')
 const cors = require('cors')
 // импорт основного роутера, который связывает все остальные
 const router = require('./routes/index')
+// импорт middleware функции для обработки ошибок
+const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 
 // порт, на котором приложение будет работать. Возвращается значение из переменной окружения, или же используется стандартное значение
 const PORT = process.env.PORT || 5000
@@ -24,6 +26,8 @@ app.use(cors())
 app.use(express.json())
 // назначаем middleware функцию - router, который должен отрабатывать по адресу api
 app.use('/api', router)
+// обязательно регистрируем middleware для обработки ошибки в самом конце, чтобы результат выводился на основании окончания работы всех предыдущих middleware функции
+app.use(errorHandler)
 
 // Функция подключения к БД. Все операции с БД являются асинхронными - используем async/await
 const start = async () => {
