@@ -16,6 +16,7 @@ const reviewRouter = require('./reviewRouter')
 const sellerRouter = require('./sellerRouter')
 const usergoodRouter = require('./usergoodRouter')
 const valueRouter = require('./valueRouter')
+const applicationRouter = require('./applicationRouter')
 
 // т.к. остальные роутеры являются подроутерами, указываем, что нужно обрабатывать их как middleware функции. 1 аргументом передаём url, по которому роутер будет отрабатывать, 2 аргумент - сам роутер
 router.use('/user', userRouter)
@@ -30,6 +31,7 @@ router.use('/review', reviewRouter)
 router.use('/seller', sellerRouter)
 router.use('/usergood', usergoodRouter)
 router.use('/value', valueRouter)
+router.use('/application', applicationRouter)
 
 // экспорт объекта для использования в других файлах
 module.exports = router

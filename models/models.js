@@ -10,14 +10,24 @@ const User = sequelize.define('user', {
     firstname: {type: DataTypes.STRING, allowNull: false},
     lastname: {type: DataTypes.STRING, allowNull: false},
     patronymic: {type: DataTypes.STRING, allowNull: false},
-    birthdate: {type: DataTypes.DATE, allowNull: false}, // изменить
-    phonenumber: {type: DataTypes.INTEGER, allowNull: false}, // изменить
-    email: {type: DataTypes.STRING, unique: true},
-    password: {type: DataTypes.STRING},
+    birthdate: {type: DataTypes.DATE, allowNull: false},
+    phonenumber: {type: DataTypes.INTEGER, allowNull: false},
+    email: {type: DataTypes.STRING, unique: true, allowNull: false},
+    password: {type: DataTypes.STRING, allowNull: false},
     role: {type: DataTypes.STRING, defaultValue: 'USER'},
     img: {type: DataTypes.STRING, defaultValue:
             'https://drive.google.com/file/d/1UQhH0mgjTN0zKjgcw8ci1XKDWQ_MP5-b/view?usp=sharing'},
-    complaint: {type: DataTypes.INTEGER, defaultValue: 0}, // изменить
+    complaint: {type: DataTypes.INTEGER, defaultValue: 0},
+})
+
+// Описываем модель заявления для продавца
+const Application = sequelize.define('application', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false},
+    phone: {type: DataTypes.INTEGER, allowNull: false},
+    email: {type: DataTypes.STRING, unique: true, allowNull: false},
+    password: {type: DataTypes.STRING, allowNull: false},
+    reason: {type: DataTypes.STRING, allowNull: false}
 })
 
 // Описываем модель данных карточки оплаты
@@ -32,12 +42,12 @@ const Card = sequelize.define('card', {
 const Seller = sequelize.define('seller', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, allowNull: false},
-    phonenumber: {type: DataTypes.INTEGER, allowNull: false}, // изменить
-    email: {type: DataTypes.STRING, unique: true},
-    password: {type: DataTypes.STRING},
+    phonenumber: {type: DataTypes.INTEGER, allowNull: false},
+    email: {type: DataTypes.STRING, unique: true, allowNull: false},
+    password: {type: DataTypes.STRING, allowNull: false},
     img: {type: DataTypes.STRING, allowNull: false},
     cardimg: {type: DataTypes.STRING, allowNull: false},
-    address: {type: DataTypes.STRING, allowNull: false}, // Изменить
+    address: {type: DataTypes.STRING, allowNull: false},
     description: {type: DataTypes.STRING},
     complaint: {type: DataTypes.INTEGER, defaultValue: 0},
 })
@@ -58,7 +68,7 @@ const OrderGood = sequelize.define('order_good', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     phonenumber: {type: DataTypes.INTEGER, allowNull: false},
     amount: {type: DataTypes.INTEGER, defaultValue: 1},
-    address: {type: DataTypes.STRING, allowNull: false}, // Изменить
+    address: {type: DataTypes.STRING, allowNull: false},
     payment: {type: DataTypes.STRING, allowNull: false},
     status: {type: DataTypes.STRING, defaultValue: "Создано"}
 })
@@ -101,7 +111,7 @@ const Value = sequelize.define('value', {
 const Review = sequelize.define('review', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     rate: {type: DataTypes.INTEGER, allowNull: false},
-    text: {type: DataTypes.STRING, defaultValue: ''},
+    text: {type: DataTypes.STRING},
     complaint: {type: DataTypes.INTEGER, defaultValue: 0},
 })
 
@@ -120,6 +130,9 @@ Review.belongsTo(User)
 
 User.hasMany(Question)
 Question.belongsTo(User)
+
+User.hasOne(Application)
+Application.belongsTo(User)
 
 Seller.hasMany(Good)
 Good.belongsTo(Seller)
@@ -164,5 +177,6 @@ module.exports = {
     Review,
     GoodImg,
     Question,
-    Card
+    Card,
+    Application
 }
