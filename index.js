@@ -10,6 +10,9 @@ const sequelize = require('./db')
 const models = require('./models/models')
 // импорт библиотеки cors для запросов к БД с браузера
 const cors = require('cors')
+// импорт основного роутера, который связывает все остальные
+const router = require('./routes/index')
+
 // порт, на котором приложение будет работать. Возвращается значение из переменной окружения, или же используется стандартное значение
 const PORT = process.env.PORT || 5000
 
@@ -19,6 +22,8 @@ const app = express()
 app.use(cors())
 // строка ниже позволяет приложению парсить формат json
 app.use(express.json())
+// назначаем middleware функцию - router, который должен отрабатывать по адресу api
+app.use('/api', router)
 
 // Функция подключения к БД. Все операции с БД являются асинхронными - используем async/await
 const start = async () => {
