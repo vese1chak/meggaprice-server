@@ -21,7 +21,7 @@ const User = sequelize.define('user', {
 })
 
 // Описываем модель данных карточки оплаты
-const PaymentCard = sequelize.define('payment_card', {
+const Card = sequelize.define('card', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     cardnumber: {type: DataTypes.INTEGER, allowNull: false},
     cvc: {type: DataTypes.INTEGER, allowNull: false},
@@ -112,8 +112,8 @@ UserGood.belongsTo(User)
 User.hasMany(OrderGood)
 OrderGood.belongsTo(User)
 
-User.hasMany(PaymentCard)
-PaymentCard.belongsTo(User)
+User.hasMany(Card)
+Card.belongsTo(User)
 
 User.hasMany(Review)
 Review.belongsTo(User)
@@ -126,6 +126,9 @@ Good.belongsTo(Seller)
 
 Seller.hasMany(Question)
 Question.belongsTo(Seller)
+
+Seller.hasOne(Card)
+Card.belongsTo(Seller)
 
 Good.hasMany(OrderGood)
 OrderGood.belongsTo(Good)
@@ -161,5 +164,5 @@ module.exports = {
     Review,
     GoodImg,
     Question,
-    PaymentCard
+    Card
 }
