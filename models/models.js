@@ -2,7 +2,7 @@
 // Импортируем ранее описанный объект для подключения к БД
 const sequelize = require('../db')
 // DataTypes описывает типы определённого поля (string, int, etc)
-const {DataTypes} = require('sequelize')
+const {DataTypes, STRING} = require('sequelize')
 
 // Описываем модель пользователя. Первым аргументом в вызываемом методе пишем название модели, вторым - объект с колонками для таблиц
 const User = sequelize.define('user', {
@@ -45,10 +45,10 @@ const Seller = sequelize.define('seller', {
     phonenumber: {type: DataTypes.INTEGER, allowNull: false},
     email: {type: DataTypes.STRING, unique: true, allowNull: false},
     password: {type: DataTypes.STRING, allowNull: false},
-    img: {type: DataTypes.STRING, allowNull: false},
-    cardimg: {type: DataTypes.STRING, allowNull: false},
-    address: {type: DataTypes.STRING, allowNull: false},
-    description: {type: DataTypes.STRING},
+    img: {type: DataTypes.STRING, defaultValue: ''},
+    cardimg: {type: DataTypes.STRING, defaultValue: ''},
+    address: {type: DataTypes.STRING, defaultValue: ''},
+    description: {type: DataTypes.STRING, defaultValue: ''},
     complaint: {type: DataTypes.INTEGER, defaultValue: 0},
 })
 
@@ -81,11 +81,16 @@ const Good = sequelize.define('good', {
     description: {type: DataTypes.STRING, allowNull: false},
     price: {type: DataTypes.INTEGER, allowNull: false},
     rating: {type: DataTypes.FLOAT, defaultValue: 0},
+    img: {type: DataTypes.STRING, allowNull: false},
 })
 
 const GoodImg = sequelize.define('good_img', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     img: {type: DataTypes.STRING, allowNull: false},
+})
+
+const GoodProperty = sequelize.define('good_property', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 })
 
 // Описываем модель категории/подкатегории
@@ -155,6 +160,9 @@ Review.belongsTo(Good)
 Good.hasMany(GoodImg)
 GoodImg.belongsTo(Good)
 
+Good.hasMany(GoodProperty)
+GoodProperty.belongsTo(Good)
+
 Type.hasMany(Good)
 Good.belongsTo(Type)
 
@@ -163,6 +171,9 @@ Property.belongsTo(Type)
 
 Property.hasMany(Value)
 Value.belongsTo(Property)
+
+Property.hasMany(GoodProperty)
+GoodProperty.belongsTo(Property)
 
 // Экспортируем модели в другие файлы
 module.exports = {

@@ -10,6 +10,8 @@ const sequelize = require('./db')
 const models = require('./models/models')
 // импорт библиотеки cors для запросов к БД с браузера
 const cors = require('cors')
+// регистрируем модуль для работы с файлами
+const fileUpload = require('express-fileupload')
 // импорт основного роутера, который связывает все остальные
 const router = require('./routes/index')
 // импорт middleware функции для обработки ошибок
@@ -24,6 +26,8 @@ const app = express()
 app.use(cors())
 // строка ниже позволяет приложению парсить формат json
 app.use(express.json())
+// добавляем в цепочку middleware функций ещё одну для обработки файлов
+app.use(fileUpload({}))
 // назначаем middleware функцию - router, который должен отрабатывать по адресу api
 app.use('/api', router)
 // обязательно регистрируем middleware для обработки ошибки в самом конце, чтобы результат выводился на основании окончания работы всех предыдущих middleware функции
