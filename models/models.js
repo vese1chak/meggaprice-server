@@ -89,8 +89,10 @@ const GoodImg = sequelize.define('good_img', {
     img: {type: DataTypes.STRING, allowNull: false},
 })
 
-const GoodProperty = sequelize.define('good_property', {
+const GoodInfo = sequelize.define('good_info', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    characteristic: {type: DataTypes.STRING, allowNull: false},
+    description: {type: DataTypes.STRING, allowNull: false}
 })
 
 // Описываем модель категории/подкатегории
@@ -160,8 +162,9 @@ Review.belongsTo(Good)
 Good.hasMany(GoodImg)
 GoodImg.belongsTo(Good)
 
-Good.hasMany(GoodProperty)
-GoodProperty.belongsTo(Good)
+// с помощью as можем указать название поля, которое будет определено массиву характеристик
+Good.hasMany(GoodInfo, {as: 'info'})
+GoodInfo.belongsTo(Good)
 
 Type.hasMany(Good)
 Good.belongsTo(Type)
@@ -171,9 +174,6 @@ Property.belongsTo(Type)
 
 Property.hasMany(Value)
 Value.belongsTo(Property)
-
-Property.hasMany(GoodProperty)
-GoodProperty.belongsTo(Property)
 
 // Экспортируем модели в другие файлы
 module.exports = {
@@ -189,5 +189,6 @@ module.exports = {
     GoodImg,
     Question,
     Card,
-    Application
+    Application,
+    GoodInfo
 }

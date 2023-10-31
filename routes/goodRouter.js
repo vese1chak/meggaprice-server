@@ -7,7 +7,7 @@ const goodController = require('../controllers/goodController')
 
 router.post('/', goodController.create)
 router.get('/', goodController.getAll)
-// router.get('/:id', goodController)
+router.get('/:id', goodController.getOne)
 
 // экспорт объекта для использования в других файлах
 module.exports = router

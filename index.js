@@ -16,6 +16,8 @@ const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
 // импорт middleware функции для обработки ошибок
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
+// импорт модуля для определения текущего каталога
+const path = require("path");
 
 // порт, на котором приложение будет работать. Возвращается значение из переменной окружения, или же используется стандартное значение
 const PORT = process.env.PORT || 5000
@@ -26,6 +28,8 @@ const app = express()
 app.use(cors())
 // строка ниже позволяет приложению парсить формат json
 app.use(express.json())
+// указываем серверу, что файлы из папки static нужно раздавать как доступные
+app.use(express.static(path.resolve(__dirname, 'static')))
 // добавляем в цепочку middleware функций ещё одну для обработки файлов
 app.use(fileUpload({}))
 // назначаем middleware функцию - router, который должен отрабатывать по адресу api
