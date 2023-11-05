@@ -4,12 +4,15 @@ const Router = require('express')
 const router = new Router()
 // импортируем логику для работы с сущностью
 const UserController = require('../controllers/userController')
+// импорт middleware функции для проверки валидности и декодирования токена
+const authMiddleware = require('../middleware/authMiddleware')
 
 // 2 параметром передаём метод для взаимодействия с сущностью
 router.post('/registration', UserController.registration)
 router.post('/login', UserController.login)
-// первым параметром get запроса передаём адрес, по которому запрос будет отрабатывать, вторым - callback, принимающий параметрами запрос и ответ
-router.get('/auth', UserController.check)
+// реализуем get запрос по проверке на авторизованность
+// первым параметром get запроса передаём адрес, по которому запрос будет отрабатывать, вторым - функцию по проверке на авторизованность, третьим - callback, принимающий параметрами запрос и ответ
+router.get('/auth', authMiddleware, UserController.check)
 
 // экспорт объекта для использования в других файлах
 module.exports = router
