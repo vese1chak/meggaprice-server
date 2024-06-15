@@ -15,8 +15,7 @@ const User = sequelize.define('user', {
     email: {type: DataTypes.STRING, unique: true, allowNull: false},
     password: {type: DataTypes.STRING, allowNull: false},
     role: {type: DataTypes.STRING, defaultValue: 'USER'},
-    img: {type: DataTypes.STRING, defaultValue:
-            'https://drive.google.com/file/d/1UQhH0mgjTN0zKjgcw8ci1XKDWQ_MP5-b/view?usp=sharing'},
+    img: {type: DataTypes.STRING, defaultValue: 'https://3myhouse.com/upload/image/store/0.png'},
     complaint: {type: DataTypes.INTEGER, defaultValue: 0},
 })
 
@@ -118,7 +117,9 @@ const Value = sequelize.define('value', {
 const Review = sequelize.define('review', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     rate: {type: DataTypes.INTEGER, allowNull: false},
-    text: {type: DataTypes.STRING},
+    dignity: {type: DataTypes.STRING},
+    flaws: {type: DataTypes.STRING},
+    comment: {type: DataTypes.STRING},
     complaint: {type: DataTypes.INTEGER, defaultValue: 0},
 })
 

@@ -22,11 +22,12 @@ class GoodController {
 
             if (info) {
                 // Парсим данные из formdata в JS объект
-                info = JSON.parse(info)
+                let parsedInfo = JSON.parse(info)
+                console.log(parsedInfo)
                 // для каждого поля создаём отдельную строку в БД
-                info.forEach(i =>
+                parsedInfo.forEach(i =>
                     GoodInfo.create({
-                        characteristic: i.characteristic,
+                        characteristic: i.title,
                         description: i.description,
                         goodId: good.id
                     })
@@ -41,18 +42,14 @@ class GoodController {
 
     async getAll(req, res) {
         // получаем параметры из строки запроса
-        let {typeId, limit, page} = req.query
-        page = page || 1
-        limit = limit || 5
-        // отступ с первой страницы
-        let offset = page * limit - limit
+        let {typeId} = req.query
         let goods;
         // реализация фильтрации. Чтобы реализовать пагинацию на клиенте, надо знать общее количество товаров, которое вернётся по заданной строке запроса. Используем предназначенный для этого метод findAndCountAll
         if (!typeId) {
-            goods = await Good.findAndCountAll({limit, offset})
+            goods = await Good.findAll()
         }
         else {
-            goods = await Good.findAndCountAll({where: {typeId}, limit, offset})
+            goods = await Good.findAll({where: {typeId}})
         }
         return res.json(goods)
     }
@@ -68,6 +65,12 @@ class GoodController {
                 include: [{model: GoodInfo, as: 'info'}]
             }
         )
+        return res.json(good)
+    }
+
+    async existing(req, res) {
+        const {title} = req.query
+        const good = await Good.findOne({where: {title}})
         return res.json(good)
     }
 }
